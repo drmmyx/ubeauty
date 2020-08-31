@@ -1,0 +1,90 @@
+body 
+{
+	font-family:Bradley Hand ITC; 
+	color:#fff;
+	background-size:auto;
+}
+.closebtn
+{
+	position:absolute;
+	top:20px;
+	right:425px;
+	font-size:40px;
+	cursor:pointer;
+	color:black;
+}
+.closebtn:hover
+{
+	color:#ccc;
+}
+
+.signIn 
+{
+	background:pink;
+	padding:40px;
+	width:250px;
+	margin:auto;
+	margin-top:50px;
+	height:400px;
+	margin-left:180x;
+	display:block;
+	
+}
+form 
+{
+	width:240px; 
+	text-align:center;
+}
+input[type=text]
+{
+	width:240px;
+	text-align:center;
+	background:transparent;
+	border:none;
+	border-bottom:1px solid #fff;
+	font-family:'Play',sans-serif;
+	font-size:20px;
+	font-weight:200px;
+	padding:10px 0;
+	transition:border 0.55;
+	outline:none;
+	color:#fff;
+}
+input[type=button]
+{
+	font-family:Pristina;
+	border:none;
+	width:190px;
+	background:blue-gray;
+	color:#000;
+	font-size:20px;
+	line-height:25px;
+	padding:10px 0;
+	border-radius:15px;
+	cursor:pointer;
+}
+input[type=button]:hover
+{
+	color:pink;
+	background-color:black;
+}
+h2
+{
+	font-family:Broadway;
+	font-size:50px;
+	color:#fff;
+}
+a
+{
+	color:yellow;
+	text-decoration:blink;
+}
+a:hover
+{
+	color:skyblue;
+}
+::placeholder
+{
+	color:aliceblue;
+	opacity:0.8;
+}
