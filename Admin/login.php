@@ -1,6 +1,6 @@
 <?php
 session_start(); //Starting session_start
-
+echo "hihi";
 //if session exit, user neither need to signin nor need to signup
 if (isset($_SESSION['login_id'])) {
 	if (isset($_SESSION['pageStore'])) {
