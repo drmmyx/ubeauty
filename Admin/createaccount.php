@@ -1,57 +1,188 @@
+<?php
+session_start(); //Start Session 
+
+//if session exit, user nither need to signin nor need to signup 
+if (isset($_SESSION['login_id'])) {
+	if (isset($_SESSION['pageStore'])) {
+		$pageStore = $_SESSION['pageStore'];
+		header("location: $pageStore"); //Redirecting to profile page
+	}
+}
+
+//Register process start, if user press the signup button 
+if (isset($_POST['signUp'])) {
+	if (empty($_POST['fullName']) || empty($_POST['email']) || empty($_POST['newPassword'])) {
+		echo "Please fill up all the required field.";
+	} else {
+		$fullName = $_POST['fullName'];
+		$email = $_POST['email'];
+		$password = $_POST['newPassword'];
+		$hash = password_hash($password, PASSWORD_DEFAULT);
+
+		//Make a connection with a MySQL server 
+		include('connection.php');
+
+		$sQuery = "SELECT id from adm where email=? LIMIT 1";
+		$iQuery = "INSERT into adm(fullName, email, password) VALUES(?, ?, ?)";
+
+		//To protect from MySQL injection 
+		$stmt = $conn->prepare($sQuery);
+		$stmt->bind_param("s", $email);
+		$stmt->execute();
+		$stmt->bind_result($id);
+		$stmt->store_result();
+		$rnum = $stmt->num_rows;
+
+		if ($rnum == 0) {
+			//if true, insert new data 
+			$stmt->close();
+
+			$stmt = $conn->prepare($iQuery);
+			$stmt->bind_param("sss", $fullName, $email, $hash);
+			if ($stmt->execute()) {
+				echo "Register successfully, Please login with your login details";
+			}
+		} else {
+			echo "Someone already register with this ($email) email address";
+		}
+		$stmt->close();
+		$conn->close(); //Closing database connection
+	}
+}
+?>
+
 <!DOCTYPE html>
 <html>
-<head><title>Account</title>
-<script>
-function create()
-{
-	alert("Your account is successfully set.");
-}
-</script>
-<style type="text/css">
-body{font-family: "Berlin Sans FB", Georgia, Serif;}
-#loading{position: fixed;width: 99%;height: 100vh;background: white url('image/loading.gif') no-repeat center;z-index:99999;}
-fieldset{width:600px; border:0.5px solid #21759b; box-shadow:3px 3px 10px pink; background-color:rgba(226, 46, 93, 0.2);}
-label{width:150px; text-align:right; font-size:13px; margin-right:10px;}
-input[type=text],input[type=password]{border:1px solid grey; height:20px; padding:5px 15px;width:250px;}
-input[type=email]{border:1px solid grey; height:20px; padding:5px 15px;width:250px;}
-input[type=email]:hover,[type=text]:hover,[type=password]:hover{border-color:blue;}
-input[type=submit]{background-color: rgba(0, 154, 255, 0.3); border-radius: 7px;border-color: rgba(65, 109, 255, 0.2);float: right;color: black;}
-input[type=submit]:hover{opacity:0.6;}	
-</style>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="shortcut icon" type="image/jpeg" href="image/logo1.jpeg">
+	<title>Register Admin</title>
+	<link rel="stylesheet" type="text/css" href="r1form.css">
 </head>
-<body onload="setTimeout(myFunction, 2000);">
-<div id="loading"></div>
-<a href="login.php"><img src="image/left.png"  title="Back to front page" style="width:50px;height:50px"></a>
-<div style="width:600px; padding:0; margin:auto; border-radius:10px;">
-	<p style="font-size:1.5em;">Create your admin account below <img src="image/below arrow.png" style="width:50px;height:30px"></p>
-	<form name="admin_account">
-		<fieldset>
-			<label>Admin ID: <br></label>
-			<input type="text" name="admin-id" style="border-radius:4px;" placeholder="Enter your ID..." >
-			<br><br><label>Contact Number: <br></label>
-			<div>
-				<input type="text" name="admin_contact_num" style="border-radius:4px;" placeholder="Enter your contact...">
+
+<body>
+	<div class="r1form">
+		<div class="r1form r1form-wrapper">
+			<div class="r1form-box">
+				<div class="r1form-box-inner">
+					<form method="post" oninput="validatePassword()">
+						<p>Let's create your account</p>
+
+						<div class="r1form-group">
+							<label>Full Name</label>
+							<input type="text" name="fullName" class="r1form-input" required>
+						</div>
+
+						<div class="r1form-group">
+							<label>Email</label>
+							<input type="email" name="email" class="r1form-input" required>
+						</div>
+
+						<div class="r1form-group">
+							<label>Password</label>
+							<input type="password" name="newPassword" id="newPass" class="r1form-input" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+						</div>
+
+						<div class="r1from-group">
+							<label>Conform password</label>
+							<input type="password" name="conformPassword" id="conformPass" class="r1form-input" required>
+						</div>
+
+						<button class="r1form-btn" name="signUp">Sign Up</button>
+
+						<div class="text-foot">
+							Already have an account? <a href="login.php">Login</a></button>
+					</form>
+				</div>
 			</div>
-			<br><label style="clear:left;">Email Address: <br></label>
-			<input type="email" name="admin_email" style="border-radius:4px;" placeholder="Enter your email..." />
-			<br><br><label>Password: <br></label>
-			<input type="password" name="admin_password" style="border-radius:4px;" placeholder="Enter your password..." />
-			<br><br><label>Confirm Password: <br></label>
-			<input type="password" name="admin_password" style="border-radius:4px;" placeholder="Confirm password..." />
-			<br><br><input type="submit" name="submitbtn" value="Submit" onclick="create()">
-		</fieldset>		
-	</form>
-</div>
+		</div>
+	</div>
 
-<script>
+	<script type="text/javascript">
+		function validatePassword() {
+			if (newPass.value != conformPass.value) {
+				conformPass.setCustomValidaty('Password do not match.');
+			} else {
+				conformPass.setCustomValidaty('');
+			}
+		}
 
-	var preloader = document.getElementById('loading');
-	
-	function myFunction(){
-		preloader.style.display = 'none'
-	}
-	
-</script>
+		var myInput = document.getElementById("newPass");
+		var letter = document.getElementById("letter");
+		var capital = document.getElementById("capital");
+		var number = document.getElementById("number");
+		var length = document.getElementById("length");
 
+		// When the user clicks on the password field, show the message box
+		myInput.onfocus = function() {
+			document.getElementById("message").style.display = "block";
+		}
+
+		// When the user clicks outside of the password field, hide the message box
+		myInput.onblur = function() {
+			document.getElementById("message").style.display = "none";
+		}
+
+		// When the user starts to type something inside the password field
+		myInput.onkeyup = function() {
+			// Validate lowercase letters
+			var lowerCaseLetters = /[a-z]/g;
+			if (myInput.value.match(lowerCaseLetters)) {
+				letter.classList.remove("invalid");
+				letter.classList.add("valid");
+			} else {
+				letter.classList.remove("valid");
+				letter.classList.add("invalid");
+			}
+
+			// Validate capital letters
+			var upperCaseLetters = /[A-Z]/g;
+			if (myInput.value.match(upperCaseLetters)) {
+				capital.classList.remove("invalid");
+				capital.classList.add("valid");
+			} else {
+				capital.classList.remove("valid");
+				capital.classList.add("invalid");
+			}
+
+			// Validate numbers
+			var numbers = /[0-9]/g;
+			if (myInput.value.match(numbers)) {
+				number.classList.remove("invalid");
+				number.classList.add("valid");
+			} else {
+				number.classList.remove("valid");
+				number.classList.add("invalid");
+			}
+
+			// Validate length
+			if (myInput.value.length >= 8) {
+				length.classList.remove("invalid");
+				length.classList.add("valid");
+			} else {
+				length.classList.remove("valid");
+				length.classList.add("invalid");
+			}
+		}
+
+
+		window.onload = function() {
+			document.getElementById("newPass").onchange = validatePassword;
+			document.getElementById("conformPass").onchange = validatePassword;
+		}
+
+		function validatePassword() {
+			var pass1 = document.getElementById("newPass").value;
+			var pass2 = document.getElementById("conformPass").value;
+			if (pass1 != pass2)
+				document.getElementById("conformPass").setCustomValidity("Password do not match");
+			else
+				document.getElementById("conformPass").setCustomValidity('');
+			//empty string means no validation error
+		}
+	</script>
 </body>
+
 </html>

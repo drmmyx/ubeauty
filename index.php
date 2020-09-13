@@ -1,3 +1,9 @@
+<?php
+session_start();
+// $_SESSION['pageStore'] = "index.php";
+include('dbconfig.php');
+error_reporting(0);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,6 +22,7 @@
   <link rel="stylesheet" href="css/owl.carousel.min.css">
   <link rel="stylesheet" href="css/owl.theme.default.min.css">
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <link rel="stylesheet" href="css/aos.css">
 
@@ -36,7 +43,7 @@
             <div class="intro-text text-center text-md-left">
               <p class="mb-4">Passing savings onto you every day with regular promotions bound to surprise you and your friends.</p>
               <p>
-                <a href="shop1.php" class="btn btn-sm btn-primary">Shop Now</a>
+                <a href="shop.php" class="btn btn-sm btn-primary">Shop Now</a>
               </p>
             </div>
           </div>
@@ -83,7 +90,7 @@
       <div class="container">
         <div class="row">
           <div class="col-sm-6 col-md-6 col-lg-4 mb-4 mb-lg-0" data-aos="fade" data-aos-delay="">
-            <a class="block-2-item" href="productList.php?category_ID=3&page=1">
+            <a class="block-2-item" href="productList.php?category_ID=3">
               <figure class="image">
                 <img src="image/eye mask.jpg" alt="" class="img-fluid">
               </figure>
@@ -94,7 +101,7 @@
             </a>
           </div>
           <div class="col-sm-6 col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="100">
-            <a class="block-2-item" href="productList.php?category_ID=1&page=1">
+            <a class="block-2-item" href="productList.php?category_ID=1">
               <figure class="image">
                 <img src="image/lip mask2.jpg" alt="" class="img-fluid">
               </figure>
@@ -105,7 +112,7 @@
             </a>
           </div>
           <div class="col-sm-6 col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="200">
-            <a class="block-2-item" href="facemask1.php">
+            <a class="block-2-item" href="productList.php?category_ID=2">
               <figure class="image">
                 <img src="image/face mask.jpg" alt="" class="img-fluid">
               </figure>
@@ -128,67 +135,138 @@
         </div>
         <div class="row">
           <div class="col-md-12">
+            <?php
+            $sql = "SELECT * FROM `product` where product_ID = 1043";
+            $result = $conn->query($sql);
+            if ($result->num_rows > 0) {
+              // output data of each row
+              while ($row = $result->fetch_assoc()) {
+              }
+            } else {
+              echo "0 results";
+            }
+            ?>
             <div class="nonloop-block-3 owl-carousel">
-              <div class="item">
-                <div class="block-4 text-center">
-                  <figure class="block-4-image">
-                    <img src="image/facemask/JM Solution Honey Luminous Royal Propolis Mask.png" alt="Image placeholder" class="img-fluid">
-                  </figure>
-                  <div class="block-4-text p-4">
-                    <h3><a style="font-family:KaiTi;font-style:italic;" href="Facemask_JM Solution Honey Luminous Royal Propolis Mask.php">JM SOLUTION</a></h3>
-                    <p class="mb-0">Water Luminous Avocado Oil Ampoule Mask</p>
-                    <p style="color:grey;" class="font-weight-bold">RM89.00</p>
+              <?php
+              $sql = "SELECT * FROM `product` where product_ID = 1043";
+              $result = $conn->query($sql);
+              if ($result->num_rows > 0) {
+                // output data of each row
+                while ($row = $result->fetch_assoc()) {
+                  echo '
+                <div class="item">
+                  <div class="block-4 text-center">
+                    <figure class="block-4-image">
+                      <a style="font-family:KaiTi;font-style:italic;" href="product.php?product_ID=1043">
+                        <img src="' . $row['product_Image'] . '" alt="Image placeholder" class="img-fluid">
+                      </a>
+                    </figure>
+                    <div class="block-4-text p-4">
+                      <h3><a style="font-family:KaiTi;font-style:italic;" href="product.php?product_ID=1043">' . $row['product_Brand'] . '</a></h3>
+                      <p class="mb-0">' . $row['product_Name'] . '</p>
+                      <p style="color:grey;" class="font-weight-bold">RM' . $row['product_Price'] . '</p>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="block-4 text-center">
-                  <figure class="block-4-image">
-                    <img src="image/facemask/Mirae Ex8 Minutes Instant Moisturizing Mask.png" alt="Image placeholder" class="img-fluid">
-                  </figure>
-                  <div class="block-4-text p-4">
-                    <h3><a style="font-family:KaiTi;font-style:italic;" href="Facemask_Mirae Ex8 Minutes Instant Moisturizing Mask.php">Mirae</a></h3>
-                    <p class="mb-0">Ex8 Minutes Instant Moisturizing Mask</p>
-                    <p style="color:grey;" class="font-weight-bold">RM31.90</p>
+                </div>';
+                }
+              } ?>
+
+              <?php
+              $sql = "SELECT * FROM `product` where product_ID = 1054";
+              $result = $conn->query($sql);
+              if ($result->num_rows > 0) {
+                // output data of each row
+                while ($row = $result->fetch_assoc()) {
+                  echo '
+                <div class="item">
+                  <div class="block-4 text-center">
+                    <figure class="block-4-image">
+                      <a style="font-family:KaiTi;font-style:italic;" href="product.php?product_ID=1043">
+                        <img src="' . $row['product_Image'] . '" alt="Image placeholder" class="img-fluid">
+                      </a>
+                    </figure>
+                    <div class="block-4-text p-4">
+                      <h3><a style="font-family:KaiTi;font-style:italic;" href="product.php?product_ID=1054">' . $row['product_Brand'] . '</a></h3>
+                      <p class="mb-0">' . $row['product_Name'] . '</p>
+                      <p style="color:grey;" class="font-weight-bold">RM' . $row['product_Price'] . '</p>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="block-4 text-center">
-                  <figure class="block-4-image">
-                    <img src="image/eyemask/Jayjun Eye Gel Patch.png" alt="Image placeholder" class="img-fluid">
-                  </figure>
-                  <div class="block-4-text p-4">
-                    <h3><a style="font-family:KaiTi;font-style:italic;" href="Eyemask_Jayjun.php">JAYJUN</a></h3>
-                    <p class="mb-0">Eye Gel Patch</p>
-                    <p style="color:grey;" class="font-weight-bold">RM94.90</p>
+                </div>';
+                }
+              } ?>
+
+              <?php
+              $sql = "SELECT * FROM `product` where product_ID = 1005";
+              $result = $conn->query($sql);
+              if ($result->num_rows > 0) {
+                // output data of each row
+                while ($row = $result->fetch_assoc()) {
+                  echo '
+                <div class="item">
+                  <div class="block-4 text-center">
+                    <figure class="block-4-image">
+                      <a style="font-family:KaiTi;font-style:italic;" href="product.php?product_ID=1005">
+                        <img src="' . $row['product_Image'] . '" alt="Image placeholder" class="img-fluid">
+                      </a>
+                    </figure>
+                    <div class="block-4-text p-4">
+                      <h3><a style="font-family:KaiTi;font-style:italic;" href="product.php?product_ID=1043">' . $row['product_Brand'] . '</a></h3>
+                      <p class="mb-0">' . $row['product_Name'] . '</p>
+                      <p style="color:grey;" class="font-weight-bold">RM' . $row['product_Price'] . '</p>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="block-4 text-center">
-                  <figure class="block-4-image">
-                    <img src="image/lipmask/Klavuu Nourishing Care Lip Sleeping Pack.png" alt="Image placeholder" class="img-fluid">
-                  </figure>
-                  <div class="block-4-text p-4">
-                    <h3><a style="font-family:KaiTi;font-style:italic;" href="Lipmask_Klavuu Nourishing Care Lip Sleeping Mask.php">KLAVUU</a></h3>
-                    <p class="mb-0">Nourishing Care Lip Sleeping Mask</p>
-                    <p style="color:grey;" class="font-weight-bold">RM47.00</p>
+                </div>';
+                }
+              } ?>
+
+              <?php
+              $sql = "SELECT * FROM `product` where product_ID = 1063";
+              $result = $conn->query($sql);
+              if ($result->num_rows > 0) {
+                // output data of each row
+                while ($row = $result->fetch_assoc()) {
+                  echo '
+                <div class="item">
+                  <div class="block-4 text-center">
+                    <figure class="block-4-image">
+                      <a style="font-family:KaiTi;font-style:italic;" href="product.php?product_ID=1063">
+                        <img src="' . $row['product_Image'] . '" alt="Image placeholder" class="img-fluid">
+                      </a>
+                    </figure>
+                    <div class="block-4-text p-4">
+                      <h3><a style="font-family:KaiTi;font-style:italic;" href="product.php?product_ID=1043">' . $row['product_Brand'] . '</a></h3>
+                      <p class="mb-0">' . $row['product_Name'] . '</p>
+                      <p style="color:grey;" class="font-weight-bold">RM' . $row['product_Price'] . '</p>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="block-4 text-center">
-                  <figure class="block-4-image">
-                    <img src="image/lipmask/Skin Food Avocado & Olive Lip Mask.png" alt="Image placeholder" class="img-fluid">
-                  </figure>
-                  <div class="block-4-text p-4">
-                    <h3><a style="font-family:KaiTi;font-style:italic;" href="Lipmask_Skin Food Avocado & Olive Lip Mask.php">SKIN FOOD</a></h3>
-                    <p class="mb-0">Avocado & Olive Lip Mask</p>
-                    <p style="color:grey;" class="font-weight-bold">RM25.90</p>
+                </div>';
+                }
+              } ?>
+
+              <?php
+              $sql = "SELECT * FROM `product` where product_ID = 1017";
+              $result = $conn->query($sql);
+              if ($result->num_rows > 0) {
+                // output data of each row
+                while ($row = $result->fetch_assoc()) {
+                  echo '
+                <div class="item">
+                  <div class="block-4 text-center">
+                    <figure class="block-4-image">
+                      <a style="font-family:KaiTi;font-style:italic;" href="product.php?product_ID=1017">
+                        <img src="' . $row['product_Image'] . '" alt="Image placeholder" class="img-fluid">
+                      </a>
+                    </figure>
+                    <div class="block-4-text p-4">
+                      <h3><a style="font-family:KaiTi;font-style:italic;" href="product.php?product_ID=1043">' . $row['product_Brand'] . '</a></h3>
+                      <p class="mb-0">' . $row['product_Name'] . '</p>
+                      <p style="color:grey;" class="font-weight-bold">RM' . $row['product_Price'] . '</p>
+                    </div>
                   </div>
-                </div>
-              </div>
+                </div>';
+                }
+              } ?>
+
             </div>
           </div>
         </div>
@@ -199,16 +277,17 @@
       <div class="container">
         <div class="row justify-content-center  mb-5">
           <div class="col-md-7 site-section-heading text-center pt-4">
-            <h2>Big Sale!</h2>
+            <h2>Coupon Code!</h2>
           </div>
         </div>
         <div class="row align-items-center">
           <div class="col-md-12 col-lg-7 mb-5">
-            <a href="#"><img src="image/612-2020-showcase-w1-top-100-skin-care_01591769026.jpg" alt="Image placeholder" class="img-fluid rounded"></a>
+            <a href="#"><img src="image/1.jpg" alt="Image placeholder" class="img-fluid rounded"></a>
           </div>
           <div class="col-md-12 col-lg-5 text-center pl-md-5">
-            <h2><a href="sales.php">50% less in all items</a></h2>
-            <p><a href="shop1.php" class="btn btn-primary btn-sm">Shop Now</a></p>
+            <h2>COUPON CODE FOR UBEAUTY : UBEAUTY20 </h2>
+            <p>How to use Promo Codes? Enter your promo code, hit the "Apply Coupon" button and watch your discount instantly be applied to your order. Only one coupon can be used per order.</p>
+
           </div>
         </div>
       </div>
